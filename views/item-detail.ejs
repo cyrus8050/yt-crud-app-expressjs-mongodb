@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs')%>
+
+<body>
+    <%- include('./partials/nav.ejs')%>
+
+    <div class="container">
+        <h4>Item Detail</h4>
+        <div>
+            <p><%= item.name %></p>
+            <p>$ <%= item.price %></p>
+        </div>
+        <a class="delete" href="" data-id="<%=item._id%>"> <i class="material-icons prefix">delete</i></a>
+    </div>
+
+    <script src="/materialize.js"></script>
+    <script>
+        console.log('M', M)
+        document.addEventListener('DOMContentLoaded', (event) => {
+            //the event occurred
+            M.updateTextFields();
+        })
+
+        const deleteBtn = document.querySelector('a.delete');
+        console.log('delete', deleteBtn);
+        deleteBtn.addEventListener('click', e => {
+            e.preventDefault()
+            // const id = deleteBtn.getAttribute('data-id');
+            const id = deleteBtn.dataset.id;
+            // console.log('id', id, 'id2', id2);
+
+            const endpoint = `/items/${id}`;
+            fetch(endpoint, {
+                method: 'DELETE'
+            }).then(res => res.json())
+                .then(data => {
+                    console.log('json data',data)
+                    window.location.href = data.redirect
+                })
+                .catch(err => console.log(err))
+        })
+
+
+    </script>
+</body>
+
+</html>
